@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora de Impuestos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 375px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 22px;
+            color: #1c1c1e;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1c1c1e;
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d1d6;
+            border-radius: 8px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #ffffff;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #34c759;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            -webkit-touch-callout: none;
+        }
+
+        button:active {
+            background-color: #248a3d;
+            transform: scale(0.98);
+        }
+
+        .result {
+            margin-top: 25px;
+            font-size: 18px;
+            text-align: center;
+            color: #1c1c1e;
+            font-weight: 500;
+            min-height: 24px;
+        }
+
+        /* Ajustes específicos para Safari en iOS */
+        input::-webkit-inner-spin-button,
+        input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de Impuestos</h1>
+        <label for="monto">Monto de la compra:</label>
+        <input type="number" id="monto" placeholder="Ej: 100" inputmode="decimal">
+
+        <label for="tax">Porcentaje de impuesto (%):</label>
+        <input type="number" id="tax" placeholder="Ej: 10" inputmode="decimal">
+
+        <button onclick="calcularTotal()">Calcular Total</button>
+
+        <div class="result" id="resultado"></div>
+    </div>
+
+    <script>
+        function calcularTotal() {
+            // Obtener valores y convertirlos a números
+            const monto = parseFloat(document.getElementById('monto').value);
+            const tax = parseFloat(document.getElementById('tax').value);
+            const resultado = document.getElementById('resultado');
+
+            // Validación
+            if (isNaN(monto) || isNaN(tax)) {
+                resultado.innerText = "Por favor, ingrese valores válidos.";
+                resultado.style.color = "#ff3b30";
+                return;
+            }
+
+            // Cálculo
+            const total = monto + (monto * (tax / 100));
+            
+            // Mostrar resultado con formato
+            resultado.innerText = `Total a pagar: $${total.toFixed(2)}`;
+            resultado.style.color = "#1c1c1e";
+            
+            // Ocultar teclado virtual después del cálculo
+            document.activeElement.blur();
+        }
+
+        // Mejorar la experiencia de entrada en iOS
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    window.scrollTo(0, this.offsetTop - 100);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
